@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { allUsersRoute } from '../utils/APIRoutes';
 import { default as Contacts } from '../components/Contacts';
-import {default as Welcome } from '../components/Welcome';
+import { default as Welcome } from '../components/Welcome';
+import { default as ChatContainer } from '../components/ChatContainer';
 
 function Chat() {
 
@@ -13,6 +14,7 @@ function Chat() {
     const [contacts, setContacts] = useState([]);
     const [currentUser, setCurrentUser] = useState(undefined);
     const [currentChat, setCurrentChat] = useState(undefined);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => { // reroute to login page
         async function fetchData() {
@@ -20,6 +22,7 @@ function Chat() {
                 navigate('/login');
             } else {
                 setCurrentUser(await JSON.parse(localStorage.getItem('chat-app-user')));
+                setIsLoaded(true);
             }
         }
         fetchData();
@@ -52,9 +55,12 @@ function Chat() {
                 currentUser={currentUser} 
                 changeChat={handleChatChange}
                 />
-            <Welcome 
-                currentUser={currentUser} 
-            />
+            { // If a chat is selected, fill the chat container, otherwise, do the welcome page. 
+                isLoaded && currentChat === undefined ? 
+                <Welcome currentUser={currentUser} /> 
+                : 
+                <ChatContainer currentChat={currentChat} />
+            }
         </div>
     </Container>
     );
