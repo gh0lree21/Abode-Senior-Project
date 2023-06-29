@@ -29,7 +29,7 @@ export default function SetAvatar() {
         if (!localStorage.getItem('chat-app-user')) {
             navigate('/login');
         }
-    }, [])
+    }, []);
 
     const setProfilePicture = async () => {
         if (selectedAvatar === undefined) {
