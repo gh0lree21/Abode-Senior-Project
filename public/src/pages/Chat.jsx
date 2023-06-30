@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
 
-import { allUsersRoute } from '../utils/APIRoutes';
+import { allUsersRoute, host } from '../utils/APIRoutes';
 import { default as Contacts } from '../components/Contacts';
 import { default as Welcome } from '../components/Welcome';
 import { default as ChatContainer } from '../components/ChatContainer';
+import { BiSolidSticker } from 'react-icons/bi';
 
 function Chat() {
 
+    const socket = useRef();
     const navigate = useNavigate();
     const [contacts, setContacts] = useState([]);
     const [currentUser, setCurrentUser] = useState(undefined);
@@ -27,12 +30,20 @@ function Chat() {
         }
         fetchData()
         .catch(console.error);
-    }, [localStorage]);
+    }, []);
 
+    // Connect the socket when current User changes
+    useEffect(() => {
+        if (currentUser) {
+            socket.current = io(host);
+            socket.current.emit('add-user', currentUser._id);
+        }
+    }, [currentUser]);
+
+    // Check if there is a current user and if that user has set their avatar
     useEffect(() => { 
         async function fetchData() {
             if (currentUser) {
-                // Check if there is a current user and if that user has set their avatar
                 if (currentUser.isAvatarImageSet) {
                     const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
                     setContacts(data.data);
@@ -61,7 +72,7 @@ function Chat() {
                 isLoaded && currentChat === undefined ? 
                 <Welcome currentUser={currentUser} /> 
                 : 
-                <ChatContainer currentChat={currentChat} currentUser={currentUser} />
+                <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
             }
         </div>
     </Container>
