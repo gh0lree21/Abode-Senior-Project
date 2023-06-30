@@ -64,7 +64,8 @@ export default function SetAvatar() {
             setAvatars(data);
             setIsLoading(false);
         }
-        fetchData(); // useEffect should not be directly async
+        fetchData()
+        .catch(console.error); // useEffect should not be directly async
     }, []);
 
     return (

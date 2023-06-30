@@ -25,8 +25,9 @@ function Chat() {
                 setIsLoaded(true);
             }
         }
-        fetchData();
-    }, []);
+        fetchData()
+        .catch(console.error);
+    }, [localStorage]);
 
     useEffect(() => { 
         async function fetchData() {
@@ -40,7 +41,8 @@ function Chat() {
                 }
             }
         }
-        fetchData();
+        fetchData()
+        .catch(console.error);
     }, [currentUser]);
 
     const handleChatChange = (chat) => {
@@ -59,7 +61,7 @@ function Chat() {
                 isLoaded && currentChat === undefined ? 
                 <Welcome currentUser={currentUser} /> 
                 : 
-                <ChatContainer currentChat={currentChat} />
+                <ChatContainer currentChat={currentChat} currentUser={currentUser} />
             }
         </div>
     </Container>
