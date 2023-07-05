@@ -5,3 +5,4 @@ export const setAvatarRoute = `${host}/api/auth/setAvatar`;
 export const allUsersRoute = `${host}/api/auth/allusers`;
 export const sendMessagesRoute = `${host}/api/messages/addmsg`;
 export const getAllMessagesRoute = `${host}/api/messages/getmsg`;
+export const editContactsRoute = `${host}/api/auth/editContacts`;
