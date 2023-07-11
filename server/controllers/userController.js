@@ -67,12 +67,57 @@ module.exports.getAllUsers = async (req, res, next) => {
             "avatarImage",
             "_id"
         ]);
+        console.log(users);
         return res.json(users);
     } catch (ex) {
         next(ex);
     }
 };
 
-module.exports.editContacts = async (req, res, next) => {
+module.exports.getUserContacts = async (req, res, next) => {
+    try {
     
+        const userId = req.params.id;
+        const userContactsIds = await User.findById(userId).select([
+            "contacts"
+        ]);
+        
+        // const userContacts = await User.findById(userContactsIds.forEach()).select([
+        //     "email", 
+        //     "username",
+        //     "avatarImage",
+        //     "_id"
+        // ]);
+        // const userContacts = await userContactsIds.forEach((user) => User.findById(user).select([
+        //     "email", 
+        //     "username",
+        //     "avatarImage",
+        //     "_id"
+        // ]));
+        console.log(`userId: ${userId}`);
+        console.log(userContactsIds);
+
+        const userContacts = await User.find({_id: userContactsIds.contacts }).select([
+            "email", 
+            "username",
+            "avatarImage",
+            "_id"
+        ]);
+        console.log(`userContacts: ${userContacts}`);
+        return res.json(userContacts);
+    } catch (ex) {
+        next(ex);
+    }
+}
+
+module.exports.addContact = async (req, res, next) => {
+    try {
+        const userId = req.params.id;
+        const userData = await User.findByIdAndUpdate(userId, {
+            avatarImage
+        });
+        return res.json({isSet:userData.isAvatarImageSet, image: userData.avatarImage});
+    } catch (ex) {
+        next(ex);
+    }
 }

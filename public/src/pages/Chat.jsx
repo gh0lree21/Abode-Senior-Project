@@ -4,10 +4,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 
-import { allUsersRoute, host } from '../utils/APIRoutes';
+import { allUsersRoute, host, getUserContactsRoute } from '../utils/APIRoutes';
 import { default as Contacts } from '../components/Contacts';
 import { default as Welcome } from '../components/Welcome';
 import { default as ChatContainer } from '../components/ChatContainer';
+import { default as EditContacts } from '../components/EditContacts';
 import { BiSolidSticker } from 'react-icons/bi';
 
 function Chat() {
@@ -17,6 +18,7 @@ function Chat() {
     const [contacts, setContacts] = useState([]);
     const [currentUser, setCurrentUser] = useState(undefined);
     const [currentChat, setCurrentChat] = useState(undefined);
+    const [editContactsSelected, setEditContactsSelected] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => { // reroute to login page
@@ -45,7 +47,7 @@ function Chat() {
         async function fetchData() {
             if (currentUser) {
                 if (currentUser.isAvatarImageSet) {
-                    const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+                    const data = await axios.get(`${getUserContactsRoute}/${currentUser._id}`);
                     setContacts(data.data);
                 } else {
                     navigate('/setAvatar');
@@ -55,6 +57,8 @@ function Chat() {
         fetchData()
         .catch(console.error);
     }, [currentUser]);
+
+
 
     const handleChatChange = (chat) => {
         setCurrentChat(chat);
@@ -68,11 +72,14 @@ function Chat() {
                 currentUser={currentUser} 
                 changeChat={handleChatChange}
                 />
-            { // If a chat is selected, fill the chat container, otherwise, do the welcome page. 
+            {/* { // If a chat is selected, fill the chat container, otherwise, do the welcome page. 
                 isLoaded && currentChat === undefined ? 
                 <Welcome currentUser={currentUser} /> 
                 : 
                 <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
+            } */}
+            { // if edit is selected, fill the chat container with the edit component
+                <EditContacts />
             }
         </div>
     </Container>

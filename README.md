@@ -44,3 +44,9 @@ index.js creates the root.
 ## utils:
 
 APIRoutes.js is just a storage file for all of the api routes
+
+## Colors
+https://coolors.co/palette/355070-6d597a-b56576-e56b6f-eaac8b
+
+## Logo
+https://app.logo.com/dashboard/logo_1000a7b9-4e84-4470-a0a3-22697917f14f/your-logo-files
