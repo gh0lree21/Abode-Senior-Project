@@ -58,15 +58,47 @@ function Chat() {
         .catch(console.error);
     }, [currentUser]);
 
+    // if there is a change in the contacts, update it. 
+    useEffect(() => { 
+        async function fetchData() {
+            const localStorageUser = await JSON.parse(localStorage.getItem("chat-app-user"));
+            console.log(currentUser.contacts);
+            console.log(localStorageUser.contacts);
+            if (currentUser.contacts != localStorageUser.contacts) { 
+                const data = await axios.get(`${getUserContactsRoute}/${currentUser._id}`);
+                setContacts(data.data);
+                
+            }
+        }
+        fetchData()
+        .catch(console.error);
+    }, [currentUser]);
 
+    // const updateContacts = async () => {
+    //     async function fetchData() {
+    //         const localStorageUser = await JSON.parse(localStorage.getItem("chat-app-user"));
+    //         console.log(currentUser.contacts);
+    //         console.log(localStorageUser.contacts);
+    //         if (currentUser.contacts != localStorageUser.contacts) { 
+    //             const data = await axios.get(`${getUserContactsRoute}/${currentUser._id}`);
+    //             setContacts(data.data);
+                
+    //         }
+    //     }
+    //     fetchData()
+    //     .catch(console.error);
+    // };
 
     const handleChatChange = (chat) => {
         setCurrentChat(chat);
-    }
+    };
 
     return (
     <Container>
-        <div className='container'>
+        <div className='container' /*onLoad={updateContacts} */>
+            {
+                
+            }
             <Contacts 
                 contacts={contacts} 
                 currentUser={currentUser} 

@@ -67,7 +67,6 @@ module.exports.getAllUsers = async (req, res, next) => {
             "avatarImage",
             "_id"
         ]);
-        console.log(users);
         return res.json(users);
     } catch (ex) {
         next(ex);
@@ -81,21 +80,6 @@ module.exports.getUserContacts = async (req, res, next) => {
         const userContactsIds = await User.findById(userId).select([
             "contacts"
         ]);
-        
-        // const userContacts = await User.findById(userContactsIds.forEach()).select([
-        //     "email", 
-        //     "username",
-        //     "avatarImage",
-        //     "_id"
-        // ]);
-        // const userContacts = await userContactsIds.forEach((user) => User.findById(user).select([
-        //     "email", 
-        //     "username",
-        //     "avatarImage",
-        //     "_id"
-        // ]));
-        console.log(`userId: ${userId}`);
-        console.log(userContactsIds);
 
         const userContacts = await User.find({_id: userContactsIds.contacts }).select([
             "email", 
@@ -103,9 +87,23 @@ module.exports.getUserContacts = async (req, res, next) => {
             "avatarImage",
             "_id"
         ]);
-        console.log(`userContacts: ${userContacts}`);
+    
         return res.json(userContacts);
     } catch (ex) {
+        next(ex);
+    }
+}
+
+module.exports.getSingleUser = async (req, res, next) => {
+    try {
+        const { username } = req.body;
+
+        const user = await User.findOne({username});
+        if (!user)
+            return res.json({msg: `Could not find user ${username}`, status: false});
+
+        return res.json({ status: true, user });
+    }   catch(ex) {
         next(ex);
     }
 }
@@ -113,10 +111,30 @@ module.exports.getUserContacts = async (req, res, next) => {
 module.exports.addContact = async (req, res, next) => {
     try {
         const userId = req.params.id;
-        const userData = await User.findByIdAndUpdate(userId, {
-            avatarImage
-        });
-        return res.json({isSet:userData.isAvatarImageSet, image: userData.avatarImage});
+        const contact = req.body.contact;
+        //console.log(`userId: ${userId}`);
+
+        const userData = await User.findById(userId).select([
+            "contacts"
+        ]);
+
+        if (!userData.contacts.includes(contact._id))
+        {
+            userData.contacts.push(contact);
+
+            const contacts = userData.contacts;
+            // now we need to update contacts with userData.contacts
+            const updatedUserData = await User.findByIdAndUpdate(userId, {
+                contacts
+            });
+    
+           console.log(`updatedUserData: ${JSON.stringify(updatedUserData)}`);
+            return res.json({isSet: true, userContacts: userData});
+        }
+        else {
+            return res.json({isSet: false, msg: "Error adding contact. Contact may already exist"});
+        }
+
     } catch (ex) {
         next(ex);
     }

@@ -40,6 +40,8 @@ export default function SetAvatar() {
                 image: avatars[selectedAvatar]
             });
 
+            // At this point the DB has been updated and local storage is just being updated
+            // to reflect the recent changes as well. 
             if (data.isSet) {
                 user.isAvatarImageSet = true;
                 user.avatarImage = data.image;

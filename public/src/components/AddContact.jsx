@@ -2,16 +2,20 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import axios from 'axios';
 
-import { addContactRoute } from '../utils/APIRoutes';
+import { addContactRoute, allUsersRoute, singleUserRoute } from '../utils/APIRoutes';
 
 
 export default function AddContact () {
 
-    const navigate = useNavigate();
-    const [contacts, setContacts] = useState([]);
     const [currentContact, setCurrentContact] = useState(undefined);
+    const [foundContact, setFoundContact] = useState(false);
+    const [searchSubmitted, setSearchSubmitted] = useState(false);
+    const [value, setValue] = useState({
+        username: ""
+    });
 
 
     const toastOptions = {
@@ -22,36 +26,85 @@ export default function AddContact () {
         theme: "dark"
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event) =>{
         event.preventDefault();
+        setSearchSubmitted(true);
+        const { username } = value;
+        const { data } = await axios.post(singleUserRoute, {
+            username
+        });
+        if (data.status === false) {
+            setFoundContact(false);
+        };
+        if (data.status === true) {
+            setFoundContact(true);
+            setCurrentContact(data.user);
+        };
     };
 
-    const handleValidation = () => {
+    const addContact = async () => {
+        if (currentContact === undefined) {
+            toast.error("No contact selected", toastOptions);
+        } else {
+            const user = await JSON.parse(localStorage.getItem("chat-app-user"));
+            const {data} = await axios.post(`${addContactRoute}/${user._id}`, {
+                contact: currentContact
+            });
+            
+            if (data.isSet) {
+                user.contacts = data.userContacts.contacts;
 
+                localStorage.setItem("chat-app-user", JSON.stringify(user));
+                toast.info(`Successfully added new contact`, toastOptions);
+                
+            } else {
+                toast.error(data.msg, toastOptions);
+            }
+        }
     };
+
+    const handleChange = (event) => {
+        setSearchSubmitted(false);
+        setValue({...value, [event.target.name]:event.target.value});
+};
 
     return (
         <>
             <FormContainer>
-                <form>
+                <form onSubmit={(event) =>handleSubmit(event)}>
                     <div className='searchBar'>
                         <input
                             type='text'
                             placeholder='Username'
                             name='username'
-
+                            onChange={(e) => handleChange(e)}
                         />
                         <button type="submit">Search</button>
                     </div>
                     <div className='searchResults'>
                         { // if the contact can be found in the DB, display it
-                            
-                            <h2>No results for <span></span></h2>
+                            foundContact ? 
+                            <div className='contact'>
+                                <div className='avatar'>
+                                    <img src={`data:image/svg+xml;base64,${currentContact.avatarImage}`} 
+                                    alt='avatar' 
+                                    />
+                                </div>
+                                <div className='username'>
+                                    <h3>{currentContact.username}</h3>
+                                </div>
+                            </div> 
+                            :
+                            searchSubmitted ? 
+                            <h2>No results for <span>{value.username}</span></h2>
+                            :
+                            <span></span>
                         }
                     </div>
-                    <button type="submit">Add</button>
+                    <button onClick={addContact}>Add</button>
                 </form>
             </FormContainer>
+            <ToastContainer />
         </>
     )
 }
@@ -64,10 +117,16 @@ flex-direction: column;
 color: white;
 padding: 2rem;
 img {
-    height: 20rem;
+    height: 5rem;
 }
-span {
-    color: #4e0eff;
+.username {
+    font-size: 2rem;
+}
+.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 form {
     display: flex;
@@ -97,8 +156,10 @@ form {
     
     .searchResults {
         padding-top: 1rem;
-    }
+
+        .contact {
+            
+        }
     }
 }
-
 `;
