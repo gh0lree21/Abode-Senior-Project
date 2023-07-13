@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 
-import { allUsersRoute, host, getUserContactsRoute } from '../utils/APIRoutes';
+import { host, getUserContactsRoute } from '../utils/APIRoutes';
 import { default as Contacts } from '../components/Contacts';
 import { default as Welcome } from '../components/Welcome';
 import { default as ChatContainer } from '../components/ChatContainer';
@@ -93,6 +93,12 @@ function Chat() {
         setCurrentChat(chat);
     };
 
+    // callback function so we can know if the edit contacts button has been pushed
+    const handleEditContactsButton = () => {
+        // Will return the opposite of previous value (true / false)
+        setEditContactsSelected(!editContactsSelected);
+    };
+
     return (
     <Container>
         <div className='container' /*onLoad={updateContacts} */>
@@ -103,17 +109,21 @@ function Chat() {
                 contacts={contacts} 
                 currentUser={currentUser} 
                 changeChat={handleChatChange}
+                changeEditContacts={handleEditContactsButton} // should return bool
+
                 />
-            {/* { // If a chat is selected, fill the chat container, otherwise, do the welcome page. 
+             { // If a chat is selected, fill the chat container, otherwise, do the welcome page. 
                 isLoaded && currentChat === undefined ? 
                 <Welcome currentUser={currentUser} /> 
                 : 
+                editContactsSelected ? 
+                // if edit is selected, fill the chat container with the edit component
+                 <EditContacts 
+                     contacts={contacts}
+                 />
+                 :
                 <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
-            } */}
-            { // if edit is selected, fill the chat container with the edit component
-                <EditContacts 
-                    contacts={contacts}
-                />
+            
             }
         </div>
     </Container>

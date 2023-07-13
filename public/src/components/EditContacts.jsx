@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
 
 import { default as AddContact } from '../components/AddContact';
 import { default as DeleteContact } from '../components/DeleteContact';
 
 export default function EditContacts ({ contacts }) {
 
-    const navigate = useNavigate();
     // const [contacts, setContacts] = useState([]);
     const [currentContact, setCurrentContact] = useState(undefined);
     const [addContact, setAddContact] = useState(false);

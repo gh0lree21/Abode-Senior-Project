@@ -4,7 +4,7 @@ import Logo from '../assets/logo.svg';
 
 import EditContactsButton from './EditContactsButton';
 
-function Contacts({contacts, currentUser, changeChat}) {
+function Contacts({contacts, currentUser, changeChat, changeEditContacts }) {
     const [currentUserName, setCurrentUserName] = useState(undefined); // initially we won't know the user name, we'll need to get it
     const [currentUserImage, setCurrentUserImage] = useState(undefined); // initially we won't know the user image, we'll need to get it. 
     const [currentSelected, setCurrentSelected] = useState(undefined); // no chats will be selected initially
@@ -30,7 +30,9 @@ function Contacts({contacts, currentUser, changeChat}) {
                         <h3>snappy</h3>
                     </div>
                     <div className='editContacts'>
-                        <EditContactsButton />
+                        <EditContactsButton 
+                            changeEditContacts={changeEditContacts}
+                        />
                     </div>
                 </div>
                 <div className='contacts'>
