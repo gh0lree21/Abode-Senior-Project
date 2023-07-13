@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-export default function DeleteContact () {
+import { removeContactRoute } from '../utils/APIRoutes';
 
-    const navigate = useNavigate();
-    const [contacts, setContacts] = useState([]);
+export default function DeleteContact ({ contacts, changeContact }) {
+
     const [currentContact, setCurrentContact] = useState(undefined);
-
+    const [currentSelected, setCurrentSelected] = useState(undefined); // no chats will be selected initially
 
     const toastOptions = {
         position: "bottom-right",
@@ -19,36 +19,65 @@ export default function DeleteContact () {
         theme: "dark"
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const removeContact = async () => {
+        if (currentContact === undefined) {
+            toast.error("No contact selected", toastOptions);
+        } else {
+            const user = await JSON.parse(localStorage.getItem("chat-app-user"));
+            const {data} = await axios.post(`${removeContactRoute}/${user._id}`, {
+                contact: currentContact
+            });
+
+            if (data.isDeleted) {
+                user.contacts = data.userContacts.contacts;
+
+                localStorage.setItem("chat-app-user", JSON.stringify(user));
+                toast.info("Contact was deleted", toastOptions);
+            } else {
+                toast.error(data.msg, toastOptions);
+            }
+            
+        }
     };
 
-    const handleValidation = () => {
+    const changeCurrentContact = (index, contact) => {
+        setCurrentSelected(index);
+        setCurrentContact(contact);
+        changeContact(contact);
+    }
 
-    };
 
     return (
         <>
             <FormContainer>
-                <form>
-                    <div className='searchBar'>
-                        <input
-                            type='text'
-                            placeholder='Username'
-                            name='username'
-
-                        />
-                        <button type="submit">Search</button>
-                    </div>
-                    <div className='searchResults'>
-                        { // if the contact can be found in the DB, display it
-                            
-                            <h2>No results for <span></span></h2>
-                        }
-                    </div>
-                    <button type="submit">Delete</button>
-                </form>
+                <div className='contacts'>
+                    {
+                        contacts != null ? contacts.map((contact, index) => {
+                            return (
+                                <div className={`contact ${
+                                    index === currentSelected ? 'selected' : ''
+                                }`} 
+                                key={index} 
+                                onClick={() => changeCurrentContact(index, contact)}
+                                >
+                                    <div className='avatar'>
+                                        <img src={`data:image/svg+xml;base64,${contact.avatarImage}`} 
+                                        alt='avatar' 
+                                        />
+                                    </div>
+                                    <div className='username'>
+                                        <h3>{contact.username}</h3>
+                                    </div>
+                                </div>
+                            );
+                        })
+                        :
+                        <div/>
+                    } 
+                </div>
+                <button onClick={removeContact}>Delete</button>
             </FormContainer>
+            <ToastContainer />
         </>
     )
 }
@@ -60,42 +89,57 @@ align-items: center;
 flex-direction: column;
 color: white;
 padding: 2rem;
-img {
-    height: 20rem;
-}
-span {
-    color: #4e0eff;
-}
+gap: 2rem;
+
 form {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     gap: 2rem;
 
-    .searchBar {
-        display: flex;
-        flex-direction: row;
-        gap: 2rem;
+    button {
+        width: 10rem;
     }
-
-    input {
-        background-color: transparent;
-        padding: 1rem;
-        border: 0.1rem solid #4e03ff;
-        border-radius: 0.4rem;
+}
+img {
+    height: 4rem;
+}
+.username {
+    h3 {
         color: white;
-        width: 100%;
-        font-size: 1rem;
-        &:focus {
-            border: 0.1rem solid #997af0;
-            outline: none;
+    }
+}
+.contacts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+    gap: 0.8rem;
+    width: 16rem;
+    max-height: 13rem;
+    &::-webkit-scrollbar {
+        width: 0.2rem;
+        &-thumb {
+            background-color: #ffffff39;
+            width: 0.1rem;
+            border-radius: 1rem;
         }
-    
-    .searchResults {
-        padding-top: 1rem;
     }
-    }
+}
+.contact {
+    display: flex;
+    min-height: 5rem;
+    width: 90%;
+    cursor: pointer;
+    border-radius: 0.2rem;
+    padding: 0.4rem;
+    gap: 1rem;
+    align-items: center;
+    transition: 0.5s ease-in-out;
+}
+.selected {
+    background-color: #9186f3;
 }
 
 `;

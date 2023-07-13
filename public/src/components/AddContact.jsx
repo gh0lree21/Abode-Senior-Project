@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import axios from 'axios';
 
-import { addContactRoute, allUsersRoute, singleUserRoute } from '../utils/APIRoutes';
+import { addContactRoute, singleUserRoute } from '../utils/APIRoutes';
 
 
 export default function AddContact () {
@@ -156,10 +155,6 @@ form {
     
     .searchResults {
         padding-top: 1rem;
-
-        .contact {
-            
-        }
     }
 }
 `;

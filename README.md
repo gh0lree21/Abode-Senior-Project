@@ -50,3 +50,10 @@ https://coolors.co/palette/355070-6d597a-b56576-e56b6f-eaac8b
 
 ## Logo
 https://app.logo.com/dashboard/logo_1000a7b9-4e84-4470-a0a3-22697917f14f/your-logo-files
+
+## Future development:
+
+* Refactor so that state is available to update dynamically instead of needing to refresh to see changes to contacts. --> Could redirect to the welcome page once a contact has been added?
+* Handling needs to be implemented for a user to send a message to a newly added contact who doesn't have the user added as a contact. 
+* Make "Add" button stationary about (10 rem below search bar) in the AddContact component. 
+* Fix toast notification exit button (search for button and see where a class should be used to eliminate inheritance of button size).

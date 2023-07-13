@@ -128,11 +128,39 @@ module.exports.addContact = async (req, res, next) => {
                 contacts
             });
     
-           console.log(`updatedUserData: ${JSON.stringify(updatedUserData)}`);
+        //    console.log(`updatedUserData: ${JSON.stringify(updatedUserData)}`);
             return res.json({isSet: true, userContacts: userData});
         }
         else {
             return res.json({isSet: false, msg: "Error adding contact. Contact may already exist"});
+        }
+
+    } catch (ex) {
+        next(ex);
+    }
+}
+
+module.exports.removeContact = async (req, res, next) => {
+    try {
+        const userId = req.params.id;
+        const contact = req.body.contact;
+
+        const userData = await User.findById(userId).select([
+            "contacts"
+        ]);
+
+        if (userData.contacts.includes(contact._id)) {
+            const index = userData.contacts.indexOf(contact._id);
+            
+            userData.contacts.splice(index, 1); // splices the index out of the array
+            const contacts = userData.contacts;
+            const updatedUserData = await User.findByIdAndUpdate(userId, {
+                contacts
+            });
+            return res.json({isDeleted: true, userContacts: userData});
+        }
+        else {
+            return res.json({isDeleted: false, msg: "Error deleting contact. Contact may not exist"});
         }
 
     } catch (ex) {

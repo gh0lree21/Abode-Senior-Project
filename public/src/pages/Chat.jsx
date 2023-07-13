@@ -64,7 +64,7 @@ function Chat() {
             const localStorageUser = await JSON.parse(localStorage.getItem("chat-app-user"));
             console.log(currentUser.contacts);
             console.log(localStorageUser.contacts);
-            if (currentUser.contacts != localStorageUser.contacts) { 
+            if (currentUser.contacts !== localStorageUser.contacts) { 
                 const data = await axios.get(`${getUserContactsRoute}/${currentUser._id}`);
                 setContacts(data.data);
                 
@@ -111,7 +111,9 @@ function Chat() {
                 <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
             } */}
             { // if edit is selected, fill the chat container with the edit component
-                <EditContacts />
+                <EditContacts 
+                    contacts={contacts}
+                />
             }
         </div>
     </Container>

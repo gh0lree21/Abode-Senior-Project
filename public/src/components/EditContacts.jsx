@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import { default as AddContact } from '../components/AddContact';
 import { default as DeleteContact } from '../components/DeleteContact';
 
-export default function EditContacts () {
+export default function EditContacts ({ contacts }) {
 
     const navigate = useNavigate();
-    const [contacts, setContacts] = useState([]);
+    // const [contacts, setContacts] = useState([]);
     const [currentContact, setCurrentContact] = useState(undefined);
     const [addContact, setAddContact] = useState(false);
     const [deleteContact, setDeleteContact] = useState(false);
@@ -33,6 +33,10 @@ export default function EditContacts () {
         setAddContact(false);
     };
 
+    const handleContactChange = (contact) => {
+        setCurrentContact(contact);
+    };
+
     return (
         <>
             <Container> 
@@ -47,7 +51,10 @@ export default function EditContacts () {
                     addContact === true ? <AddContact /> 
                     :
                     deleteContact === true ?
-                    <DeleteContact /> : <Container />
+                    <DeleteContact 
+                        changeContact={handleContactChange}
+                        contacts={contacts}
+                    /> : <Container />
                 }
             </Container>
         </>
