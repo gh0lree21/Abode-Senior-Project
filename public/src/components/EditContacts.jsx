@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import Logo from "../assets/logo.svg";
 import {ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -39,7 +40,7 @@ export default function EditContacts ({ contacts }) {
         <>
             <Container> 
                 <div className="brand">
-                    <h1>logo</h1>
+                    <img src={Logo} alt='logo' />
                 </div>    
                 <div className='editContactButtons'>
                     <button onClick={handleAddContact}>Add Contact</button>
@@ -86,8 +87,8 @@ padding: 4rem;
     gap: 1rem;
 }
 button {
-    background-color: #997af0;
-    color: white;
+    background-color: #ACE1AF;
+    color: #1B1B1B;
     padding: 1rem 2rem;
     border: none;
     font-weight: bold;
@@ -97,6 +98,6 @@ button {
     text-transform: uppercase;
     transition: 0.5s ease-in-out;
     &:hover {
-        background-color: #4e03ff;
+        background-color: #F2F3F4;
     }
 `;

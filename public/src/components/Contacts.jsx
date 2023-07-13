@@ -80,7 +80,10 @@ const Container = styled.div`
 display: grid;
 grid-template-rows: 10% 75% 15%;
 overflow: hidden;
-background-color: #080420;
+background-color: #1A1110;
+@media screen and (min-width: 360px) and (max-width: 480px) {
+    grid-row: 100%;
+}
 .contactsHeader {
     display: flex;
     flex-direction: row;
@@ -90,7 +93,7 @@ background-color: #080420;
     gap: 5rem;
     .editContacts {
         p {
-            color: white;
+            color: #F2F3F4;
         }
     }
     .brand {
@@ -145,18 +148,18 @@ background-color: #080420;
         }
     }
     .selected {
-        background-color: #9186f3;
+        background-color: #9F8170;
     }
 }
 .current-user {
-    background-color: #0d0d30;
+    background-color: #010B13;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 2rem;
     .avatar {
         img {
-            height: 4rem;
+            height: 3rem;
             max-inline-size: 100%;
         }
     }
@@ -167,9 +170,15 @@ background-color: #080420;
     }
     @media screen and (min-width: 360px) and (max-width: 480px) {
         gap: 0.3rem;
+        display: none;
         .username {
             h2 {
                 font-size: 1rem;
+            }
+        }
+        .avatar {
+            img {
+                1rem;
             }
         }
     }

@@ -46,10 +46,25 @@ index.js creates the root.
 APIRoutes.js is just a storage file for all of the api routes
 
 ## Colors
-https://coolors.co/palette/355070-6d597a-b56576-e56b6f-eaac8b
-
+#686868 - GREY
+#010101 - BLACK
+#1FC742 - GREEEN
+#025B18 - CAMO GREEN
+#023612 - DARK GREEN
+#39FF14 - NEON GREEN
+#100C08 - SMOKY BLACK (CHAT CONTAINER)
+#000000 - BLACK (BACKGROUND)
+#1B1B1B - EERIE BLACK (RECEIVED MESSAGES)
+#343434 - JET BLACK (SENT MESSAGES)
+#F2F3F4 - ANTI-FLASH WHITE
+#ACE1AF - CELADON
+#9F8170 - BEAVER
+#1A1110 - LICORICE
 ## Logo
 https://app.logo.com/dashboard/logo_1000a7b9-4e84-4470-a0a3-22697917f14f/your-logo-files
+
+## Contact Book Icon
+* <a href="https://www.flaticon.com/free-icons/address-book" title="address book icons">Address book icons created by Smashicons - Flaticon</a>
 
 ## Future development:
 

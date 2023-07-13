@@ -123,15 +123,20 @@ flex-direction: column;
 justify-content: center;
 gap: 1rem;
 align-items: center;
-background-color: #131324;
+background-color: #000000;
 .container {
     height: 85vh;
     width: 85vw;
-    background-color: #00000076;
+    background-color: #1B1B1B;
     display: grid;
     grid-template-columns: 25% 75%;
     @media screen and (min-width: 360px) and (max-width: 480px) {
-        grid-template-columns: 35% 65%;
+        grid-template-columns: 100%;
+        height: 100vh;
+        width: 100vw;
+        Contacts {
+            
+        }
     }
 }
 `;

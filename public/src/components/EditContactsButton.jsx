@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import ContactBook from '../assets/contact-book.png';
 
 export default function EditContactsButton ({ changeEditContacts }) {
 
@@ -8,7 +9,7 @@ export default function EditContactsButton ({ changeEditContacts }) {
     };
     return (
         <Button onClick={handleClick}>
-            <h2>Edit</h2>
+            <h3>EDIT</h3>
         </Button>
     )
 }
@@ -19,9 +20,14 @@ justify-content: center;
 align-items: center;
 padding: 0.5rem;
 border-radius: 0.5rem;
-background-color: #9a86f3;
+background-color: #ACE1AF;
 border: none;
 cursor: pointer;
+img {
+    .opacity {
+        
+    }
+}
 svg {
     font-size: 1.3rem;
     color: #ebe7ff;

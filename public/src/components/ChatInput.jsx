@@ -62,7 +62,7 @@ padding-bottom: 0.3rem;
 .button-container {
     display: flex;
     align-items: center;
-    color: white;
+    color: #F2F3F4;
     gap: 1rem;
     .emoji {
         position: relative;
@@ -128,11 +128,11 @@ padding-bottom: 0.3rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #9a86f3;
+        background-color: #ACE1AF;
         border: none;
         cursor: pointer;
         @media screen and (min-width: 360px) and (max-width: 480px) {
-            padding: 0.3rem 1rem;
+            padding: 0.2rem 0.8rem;
             svg {
                 font-size: 1rem;
             }

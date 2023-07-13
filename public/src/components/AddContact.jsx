@@ -143,13 +143,13 @@ form {
     input {
         background-color: transparent;
         padding: 1rem;
-        border: 0.1rem solid #4e03ff;
+        border: 0.1rem solid #F2F3F4;
         border-radius: 0.4rem;
         color: white;
         width: 100%;
         font-size: 1rem;
         &:focus {
-            border: 0.1rem solid #997af0;
+            border: 0.1rem solid #ACE1AF;
             outline: none;
         }
     
