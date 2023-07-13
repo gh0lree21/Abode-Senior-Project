@@ -62,8 +62,8 @@ function Chat() {
     useEffect(() => { 
         async function fetchData() {
             const localStorageUser = await JSON.parse(localStorage.getItem("chat-app-user"));
-            console.log(currentUser.contacts);
-            console.log(localStorageUser.contacts);
+            // console.log(currentUser.contacts);
+            // console.log(localStorageUser.contacts);
             if (currentUser.contacts !== localStorageUser.contacts) { 
                 const data = await axios.get(`${getUserContactsRoute}/${currentUser._id}`);
                 setContacts(data.data);
@@ -73,21 +73,6 @@ function Chat() {
         fetchData()
         .catch(console.error);
     }, [currentUser]);
-
-    // const updateContacts = async () => {
-    //     async function fetchData() {
-    //         const localStorageUser = await JSON.parse(localStorage.getItem("chat-app-user"));
-    //         console.log(currentUser.contacts);
-    //         console.log(localStorageUser.contacts);
-    //         if (currentUser.contacts != localStorageUser.contacts) { 
-    //             const data = await axios.get(`${getUserContactsRoute}/${currentUser._id}`);
-    //             setContacts(data.data);
-                
-    //         }
-    //     }
-    //     fetchData()
-    //     .catch(console.error);
-    // };
 
     const handleChatChange = (chat) => {
         setCurrentChat(chat);
@@ -113,7 +98,7 @@ function Chat() {
 
                 />
              { // If a chat is selected, fill the chat container, otherwise, do the welcome page. 
-                isLoaded && currentChat === undefined ? 
+                isLoaded && currentChat === undefined && editContactsSelected === false ? 
                 <Welcome currentUser={currentUser} /> 
                 : 
                 editContactsSelected ? 
