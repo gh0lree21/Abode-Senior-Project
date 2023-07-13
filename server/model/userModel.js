@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     avatarImage : {
         type: String,
         default: ""
+    },
+    contacts : {
+        type: [String],
+        default: [""]
     }
 });
 

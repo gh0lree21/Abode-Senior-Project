@@ -72,3 +72,98 @@ module.exports.getAllUsers = async (req, res, next) => {
         next(ex);
     }
 };
+
+module.exports.getUserContacts = async (req, res, next) => {
+    try {
+    
+        const userId = req.params.id;
+        const userContactsIds = await User.findById(userId).select([
+            "contacts"
+        ]);
+
+        const userContacts = await User.find({_id: userContactsIds.contacts }).select([
+            "email", 
+            "username",
+            "avatarImage",
+            "_id"
+        ]);
+    
+        return res.json(userContacts);
+    } catch (ex) {
+        next(ex);
+    }
+}
+
+module.exports.getSingleUser = async (req, res, next) => {
+    try {
+        const { username } = req.body;
+
+        const user = await User.findOne({username});
+        if (!user)
+            return res.json({msg: `Could not find user ${username}`, status: false});
+
+        return res.json({ status: true, user });
+    }   catch(ex) {
+        next(ex);
+    }
+}
+
+module.exports.addContact = async (req, res, next) => {
+    try {
+        const userId = req.params.id;
+        const contact = req.body.contact;
+        //console.log(`userId: ${userId}`);
+
+        const userData = await User.findById(userId).select([
+            "contacts"
+        ]);
+
+        if (!userData.contacts.includes(contact._id))
+        {
+            userData.contacts.push(contact);
+
+            const contacts = userData.contacts;
+            // now we need to update contacts with userData.contacts
+            const updatedUserData = await User.findByIdAndUpdate(userId, {
+                contacts
+            });
+    
+        //    console.log(`updatedUserData: ${JSON.stringify(updatedUserData)}`);
+            return res.json({isSet: true, userContacts: userData});
+        }
+        else {
+            return res.json({isSet: false, msg: "Error adding contact. Contact may already exist"});
+        }
+
+    } catch (ex) {
+        next(ex);
+    }
+}
+
+module.exports.removeContact = async (req, res, next) => {
+    try {
+        const userId = req.params.id;
+        const contact = req.body.contact;
+
+        const userData = await User.findById(userId).select([
+            "contacts"
+        ]);
+
+        if (userData.contacts.includes(contact._id)) {
+            const index = userData.contacts.indexOf(contact._id);
+            
+            userData.contacts.splice(index, 1); // splices the index out of the array
+            const contacts = userData.contacts;
+            const updatedUserData = await User.findByIdAndUpdate(userId, {
+                contacts
+            });
+            return res.json({isDeleted: true, userContacts: userData});
+        }
+        else {
+            return res.json({isDeleted: false, msg: "Error deleting contact. Contact may not exist"});
+        }
+
+    } catch (ex) {
+        next(ex);
+    }
+}

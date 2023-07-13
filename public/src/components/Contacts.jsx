@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Logo from '../assets/logo.svg';
 
-function Contacts({contacts, currentUser, changeChat}) {
+import EditContactsButton from './EditContactsButton';
+
+function Contacts({contacts, currentUser, changeChat, changeEditContacts }) {
     const [currentUserName, setCurrentUserName] = useState(undefined); // initially we won't know the user name, we'll need to get it
     const [currentUserImage, setCurrentUserImage] = useState(undefined); // initially we won't know the user image, we'll need to get it. 
     const [currentSelected, setCurrentSelected] = useState(undefined); // no chats will be selected initially
@@ -22,13 +24,20 @@ function Contacts({contacts, currentUser, changeChat}) {
     {
         currentUserImage && currentUserName && (
             <Container>
-                <div className='brand'>
-                    <img src={Logo} alt='logo' />
-                    <h3>snappy</h3>
+                <div className='contactsHeader'>
+                    <div className='brand'>
+                        <img src={Logo} alt='logo' />
+                        <h3>snappy</h3>
+                    </div>
+                    <div className='editContacts'>
+                        <EditContactsButton 
+                            changeEditContacts={changeEditContacts}
+                        />
+                    </div>
                 </div>
                 <div className='contacts'>
                     {
-                        contacts.map((contact, index) => {
+                        contacts != null ? contacts.map((contact, index) => {
                             return (
                                 <div className={`contact ${
                                     index === currentSelected ? 'selected' : ''
@@ -47,6 +56,8 @@ function Contacts({contacts, currentUser, changeChat}) {
                                 </div>
                             );
                         })
+                        :
+                        <Container />
                     } 
                 </div>
                 <div className='current-user'>
@@ -70,18 +81,32 @@ display: grid;
 grid-template-rows: 10% 75% 15%;
 overflow: hidden;
 background-color: #080420;
-.brand {
+.contactsHeader {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    img {
-        height: 2rem;
+    justify-content: right;
+    padding: 1.3rem;
+    gap: 5rem;
+    .editContacts {
+        p {
+            color: white;
+        }
     }
-    h3 {
-        color: white;
-        text-transform: uppercase;
+    .brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        img {
+            height: 2rem;
+        }
+        h3 {
+            color: white;
+            text-transform: uppercase;
+        }
     }
+
 }
 .contacts {
     display: flex;

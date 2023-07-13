@@ -4,10 +4,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 
-import { allUsersRoute, host } from '../utils/APIRoutes';
+import { host, getUserContactsRoute } from '../utils/APIRoutes';
 import { default as Contacts } from '../components/Contacts';
 import { default as Welcome } from '../components/Welcome';
 import { default as ChatContainer } from '../components/ChatContainer';
+import { default as EditContacts } from '../components/EditContacts';
 import { BiSolidSticker } from 'react-icons/bi';
 
 function Chat() {
@@ -17,6 +18,7 @@ function Chat() {
     const [contacts, setContacts] = useState([]);
     const [currentUser, setCurrentUser] = useState(undefined);
     const [currentChat, setCurrentChat] = useState(undefined);
+    const [editContactsSelected, setEditContactsSelected] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => { // reroute to login page
@@ -45,7 +47,7 @@ function Chat() {
         async function fetchData() {
             if (currentUser) {
                 if (currentUser.isAvatarImageSet) {
-                    const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+                    const data = await axios.get(`${getUserContactsRoute}/${currentUser._id}`);
                     setContacts(data.data);
                 } else {
                     navigate('/setAvatar');
@@ -56,23 +58,72 @@ function Chat() {
         .catch(console.error);
     }, [currentUser]);
 
+    // if there is a change in the contacts, update it. 
+    useEffect(() => { 
+        async function fetchData() {
+            const localStorageUser = await JSON.parse(localStorage.getItem("chat-app-user"));
+            console.log(currentUser.contacts);
+            console.log(localStorageUser.contacts);
+            if (currentUser.contacts !== localStorageUser.contacts) { 
+                const data = await axios.get(`${getUserContactsRoute}/${currentUser._id}`);
+                setContacts(data.data);
+                
+            }
+        }
+        fetchData()
+        .catch(console.error);
+    }, [currentUser]);
+
+    // const updateContacts = async () => {
+    //     async function fetchData() {
+    //         const localStorageUser = await JSON.parse(localStorage.getItem("chat-app-user"));
+    //         console.log(currentUser.contacts);
+    //         console.log(localStorageUser.contacts);
+    //         if (currentUser.contacts != localStorageUser.contacts) { 
+    //             const data = await axios.get(`${getUserContactsRoute}/${currentUser._id}`);
+    //             setContacts(data.data);
+                
+    //         }
+    //     }
+    //     fetchData()
+    //     .catch(console.error);
+    // };
+
     const handleChatChange = (chat) => {
         setCurrentChat(chat);
-    }
+    };
+
+    // callback function so we can know if the edit contacts button has been pushed
+    const handleEditContactsButton = () => {
+        // Will return the opposite of previous value (true / false)
+        setEditContactsSelected(!editContactsSelected);
+    };
 
     return (
     <Container>
-        <div className='container'>
+        <div className='container' /*onLoad={updateContacts} */>
+            {
+                
+            }
             <Contacts 
                 contacts={contacts} 
                 currentUser={currentUser} 
                 changeChat={handleChatChange}
+                changeEditContacts={handleEditContactsButton} // should return bool
+
                 />
-            { // If a chat is selected, fill the chat container, otherwise, do the welcome page. 
+             { // If a chat is selected, fill the chat container, otherwise, do the welcome page. 
                 isLoaded && currentChat === undefined ? 
                 <Welcome currentUser={currentUser} /> 
                 : 
+                editContactsSelected ? 
+                // if edit is selected, fill the chat container with the edit component
+                 <EditContacts 
+                     contacts={contacts}
+                 />
+                 :
                 <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
+            
             }
         </div>
     </Container>
