@@ -72,7 +72,7 @@ function Login () {
                 <form onSubmit={(event)=>handleSubmit(event)}>
                     <div className="brand">
                         <img src={Logo} alt="Logo" />
-                        <h1>snappy</h1>
+                        <h1>myabode</h1>
                     </div>
                     <input 
                         type="text" 
@@ -106,7 +106,7 @@ const FormContainer = styled.div`
     justify-content: center;
     gap: 1rem;
     align-items: center;
-    background-color: #131324;
+    background-color: #000000;
     .brand {
         display: flex;
         align-items: center;
@@ -116,7 +116,7 @@ const FormContainer = styled.div`
             height: 5rem;
         }
         h1 {
-            color: white;
+            color: #ACE1AF;
             text-transform: uppercase;
         }
     }
@@ -124,25 +124,25 @@ const FormContainer = styled.div`
         display: flex;
         flex-direction: column;
         gap:2rem;
-        background-color: # 00000076;
+        background-color: #1B1B1B;
         border-radius: 2rem;
         padding: 3rem 5rem;
         input {
             background-color: transparent;
             padding: 1rem;
-            border: 0.1rem solid #4e03ff;
+            border: 0.1rem solid #F2F3F4;
             border-radius: 0.4rem;
-            color: white;
+            color: #ACE1AF;
             width: 100%;
             font-size: 1rem;
             &:focus {
-                border: 0.1rem solid #997af0;
+                border: 0.1rem solid #ACE1AF;
                 outline: none;
             }
         }
         button {
-            background-color: #997af0;
-            color: white;
+            background-color: #ACE1AF;
+            color: #1B1B1B;
             padding: 1rem 2rem;
             border: none;
             font-weight: bold;
@@ -152,14 +152,14 @@ const FormContainer = styled.div`
             text-transform: uppercase;
             transition: 0.5s ease-in-out;
             &:hover {
-                background-color: #4e03ff;
+                background-color: #F2F3F4;
             }
         }
         span {
-            color: white;
+            color: #F2F3F4;
             text-transform: uppercase;
             a {
-                color: #4e0eff;
+                color: #686868;
                 text-decoration: none;
                 font-weight: bold;
             }

@@ -139,7 +139,7 @@ img {
     transition: 0.5s ease-in-out;
 }
 .selected {
-    background-color: #9186f3;
+    background-color: #9F8170;
 }
 
 `;

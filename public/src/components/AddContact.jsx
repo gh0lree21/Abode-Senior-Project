@@ -133,23 +133,27 @@ form {
     align-items: center;
     flex-direction: column;
     gap: 2rem;
-
+    
     .searchBar {
         display: flex;
         flex-direction: row;
         gap: 2rem;
+        @media screen and (min-width: 360px) and (max-width: 480px) {
+            display: flex;
+            flex-direction: column;
+        }
     }
 
     input {
         background-color: transparent;
         padding: 1rem;
-        border: 0.1rem solid #4e03ff;
+        border: 0.1rem solid #F2F3F4;
         border-radius: 0.4rem;
         color: white;
         width: 100%;
         font-size: 1rem;
         &:focus {
-            border: 0.1rem solid #997af0;
+            border: 0.1rem solid #ACE1AF;
             outline: none;
         }
     

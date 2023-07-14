@@ -111,6 +111,12 @@ gap: 0.1rem;
 overflow: hidden;
 @media screen and (min-width: 360px) and (max-width: 480px) {
     grid-template-columns: 15% 70% 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .chat-messages {
+        height: 100%;
+    }
 }
 
 .chat-header {
@@ -149,19 +155,23 @@ overflow: hidden;
             padding: 1rem;
             font-size: 1.1rem;
             border-radius: 1rem;
-            color: #d1d1d1;
+            color: #F2F3F4;
+            @media screen and (min-width: 360px) and (max-width: 480px) {
+                max-width: 70%;
+                max-height: 100%;
+            }
         }
     }
     .sent {
         justify-content: flex-end;
         .content {
-            background-color: #4f04ff21;
+            background-color: #343434;
         }
     }
     .received {
         justify-content: flex-start;
         .content {
-            background-color: #9900ff20;
+            background-color: #FFFFFF39;
         }
     }
     &::-webkit-scrollbar {

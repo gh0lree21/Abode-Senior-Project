@@ -27,7 +27,7 @@ function Contacts({contacts, currentUser, changeChat, changeEditContacts }) {
                 <div className='contactsHeader'>
                     <div className='brand'>
                         <img src={Logo} alt='logo' />
-                        <h3>snappy</h3>
+                        <h3>myabode</h3>
                     </div>
                     <div className='editContacts'>
                         <EditContactsButton 
@@ -80,17 +80,20 @@ const Container = styled.div`
 display: grid;
 grid-template-rows: 10% 75% 15%;
 overflow: hidden;
-background-color: #080420;
+background-color: #1A1110;
+@media screen and (min-width: 360px) and (max-width: 480px) {
+    grid-row: 100%;
+}
 .contactsHeader {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: right;
     padding: 1.3rem;
-    gap: 5rem;
+    gap: 4rem;
     .editContacts {
         p {
-            color: white;
+            color: #F2F3F4;
         }
     }
     .brand {
@@ -145,18 +148,18 @@ background-color: #080420;
         }
     }
     .selected {
-        background-color: #9186f3;
+        background-color: #9F8170;
     }
 }
 .current-user {
-    background-color: #0d0d30;
+    background-color: #010B13;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 2rem;
     .avatar {
         img {
-            height: 4rem;
+            height: 3rem;
             max-inline-size: 100%;
         }
     }
@@ -167,9 +170,15 @@ background-color: #080420;
     }
     @media screen and (min-width: 360px) and (max-width: 480px) {
         gap: 0.3rem;
+        display: none;
         .username {
             h2 {
                 font-size: 1rem;
+            }
+        }
+        .avatar {
+            img {
+                1rem;
             }
         }
     }
