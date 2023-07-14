@@ -113,12 +113,9 @@ overflow: hidden;
     grid-template-columns: 15% 70% 15%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     .chat-messages {
-        .message {
-            .content {
-                max-width: 70%;
-            }
-        }
+        height: 100%;
     }
 }
 
@@ -159,6 +156,10 @@ overflow: hidden;
             font-size: 1.1rem;
             border-radius: 1rem;
             color: #F2F3F4;
+            @media screen and (min-width: 360px) and (max-width: 480px) {
+                max-width: 70%;
+                max-height: 100%;
+            }
         }
     }
     .sent {

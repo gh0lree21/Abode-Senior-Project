@@ -133,11 +133,15 @@ form {
     align-items: center;
     flex-direction: column;
     gap: 2rem;
-
+    
     .searchBar {
         display: flex;
         flex-direction: row;
         gap: 2rem;
+        @media screen and (min-width: 360px) and (max-width: 480px) {
+            display: flex;
+            flex-direction: column;
+        }
     }
 
     input {

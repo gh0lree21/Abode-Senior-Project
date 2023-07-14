@@ -20,6 +20,8 @@ function Chat() {
     const [currentChat, setCurrentChat] = useState(undefined);
     const [editContactsSelected, setEditContactsSelected] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [width, setWindowWidth] = useState(0);
+    const [isChatSelected, setIsChatSelected] = useState(false);
 
     useEffect(() => { // reroute to login page
         async function fetchData() {
@@ -74,8 +76,29 @@ function Chat() {
         .catch(console.error);
     }, [currentUser]);
 
+    // event listener to keep track of window size for the side bar
+    useEffect(() => {
+        updateDimensions();
+
+        window.addEventListener("resize", updateDimensions);
+
+        return () => {
+            window.removeEventListener("resize", updateDimensions);
+        }
+    }, []);
+
+    const updateDimensions = () => {
+        const width = window.innerWidth;
+        setWindowWidth(width);
+    }
+
+    const responsive = {
+        seperateContactsAndChat: width > 1023
+    }
+
     const handleChatChange = (chat) => {
         setCurrentChat(chat);
+        setIsChatSelected(true);
     };
 
     // callback function so we can know if the edit contacts button has been pushed
@@ -88,27 +111,48 @@ function Chat() {
     <Container>
         <div className='container' /*onLoad={updateContacts} */>
             {
-                
-            }
-            <Contacts 
-                contacts={contacts} 
-                currentUser={currentUser} 
-                changeChat={handleChatChange}
-                changeEditContacts={handleEditContactsButton} // should return bool
-
-                />
-             { // If a chat is selected, fill the chat container, otherwise, do the welcome page. 
-                isLoaded && currentChat === undefined && editContactsSelected === false ? 
-                <Welcome currentUser={currentUser} /> 
+                responsive.seperateContactsAndChat ? 
+                <>
+                <Contacts 
+                    contacts={contacts} 
+                    currentUser={currentUser} 
+                    changeChat={handleChatChange}
+                    changeEditContacts={handleEditContactsButton} // should return bool
+                />        
+                    { // If a chat is selected, fill the chat container, otherwise, do the welcome page. 
+                        isLoaded && currentChat === undefined && editContactsSelected === false ? 
+                        <Welcome currentUser={currentUser} /> 
+                        : 
+                        editContactsSelected ? 
+                        // if edit is selected, fill the chat container with the edit component
+                        <EditContacts 
+                            contacts={contacts}
+                        />
+                        :
+                        <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
+                    
+                    }
+                </>
+                :
+                isChatSelected ?    
+                <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />                 
                 : 
-                editContactsSelected ? 
-                // if edit is selected, fill the chat container with the edit component
-                 <EditContacts 
-                     contacts={contacts}
-                 />
-                 :
-                <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
-            
+                <>
+                    {
+                        editContactsSelected ? 
+                        <EditContacts
+                            contacts={contacts}
+                        />
+                        :
+                        <Contacts 
+                            contacts={contacts} 
+                            currentUser={currentUser} 
+                            changeChat={handleChatChange}
+                            changeEditContacts={handleEditContactsButton}
+                        />
+                    }
+                </>
+                
             }
         </div>
     </Container>

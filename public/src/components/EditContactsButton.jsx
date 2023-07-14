@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import ContactBook from '../assets/contact-book.png';
 
 export default function EditContactsButton ({ changeEditContacts }) {
 

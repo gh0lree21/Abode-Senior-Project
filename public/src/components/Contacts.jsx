@@ -27,7 +27,7 @@ function Contacts({contacts, currentUser, changeChat, changeEditContacts }) {
                 <div className='contactsHeader'>
                     <div className='brand'>
                         <img src={Logo} alt='logo' />
-                        <h3>snappy</h3>
+                        <h3>myabode</h3>
                     </div>
                     <div className='editContacts'>
                         <EditContactsButton 
@@ -90,7 +90,7 @@ background-color: #1A1110;
     align-items: center;
     justify-content: right;
     padding: 1.3rem;
-    gap: 5rem;
+    gap: 4rem;
     .editContacts {
         p {
             color: #F2F3F4;
